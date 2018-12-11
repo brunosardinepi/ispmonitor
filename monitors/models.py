@@ -8,7 +8,14 @@ class Monitor(models.Model):
     last_viewed = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return ip_address
+        return self.ip_address
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            # create a new slug if this is a new object
+            self.slug = self.ip_address.replace(".", "-")
+
+        super(Monitor, self).save(*args, **kwargs)
 
 class Result(models.Model):
     monitor = models.ForeignKey(Monitor, on_delete=models.CASCADE)
