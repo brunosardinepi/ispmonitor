@@ -2,10 +2,10 @@ from django.test import Client, TestCase
 
 from model_mommy import mommy
 
-from .models import Monitor
+from .models import Monitor, Result
 
 
-class MonitorTest(TestCase):
+class MonitorsTest(TestCase):
     def setUp(self):
         self.client = Client()
 
@@ -22,6 +22,17 @@ class MonitorTest(TestCase):
         self.monitors[1].slug = '2-2-2-2'
         self.monitors[1].save()
 
+        # create results for testing
+        self.results = mommy.make(
+            Result,
+            monitor=self.monitors[0],
+            _quantity=2,
+        )
+
+        # set the 2nd result's monitor to the 2nd monitor
+        self.results[1].monitor = self.monitors[1]
+        self.results[1].save()
+
     def test_monitor_exists(self):
         """ all of the monitors are being created correctly """
 
@@ -31,6 +42,16 @@ class MonitorTest(TestCase):
         # check that each monitor is in our queryset
         for monitor in self.monitors:
             self.assertIn(monitor, monitors)
+
+    def test_result_exists(self):
+        """ all of the results are being created correctly """
+
+        # get all of the results
+        results = Result.objects.all()
+
+        # check that each result is in our queryset
+        for result in self.results:
+            self.assertIn(result, results)
 
     def test_monitor_create(self):
         """if a monitor doesn't exist when going to the monitor_detail view,
@@ -65,4 +86,25 @@ class MonitorTest(TestCase):
         # viewing a monitor_detail page different than our ip address
         # should result in 404
         response = client.get('/{}/'.format(self.monitors[1].slug))
+        self.assertEqual(response.status_code, 404)
+
+    def test_result_page(self):
+        """the result_detail page shows the correct result content"""
+
+        # view the result_detail page
+        client = Client(REMOTE_ADDR=self.monitors[0].ip_address)
+        response = client.get('/{}/{}/'.format(self.monitors[0].slug, self.results[0].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.results[0].content)
+
+        # my ip matches the result's monitor's ip
+        # but i'm going to the wrong monitor
+        # expect 404
+        response = client.get('/{}/{}/'.format(self.monitors[1].slug, self.results[0].pk))
+        self.assertEqual(response.status_code, 404)
+
+        # my ip matches the monitor's ip
+        # but i'm going to the wrong result
+        # should result in 404
+        response = client.get('/{}/{}/'.format(self.monitors[0].slug, self.results[1].pk))
         self.assertEqual(response.status_code, 404)

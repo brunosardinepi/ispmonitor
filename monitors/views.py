@@ -1,34 +1,13 @@
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views import View
 
 from .models import Monitor, Result
+from .utils import get_monitor_or_create, slug_to_ip_address
 
 
 class MonitorDetailView(View):
-    def slug_to_ip_address(self, slug):
-        # replace the slug's hyphens with periods
-        return slug.replace("-", ".")
-
-    def get_monitor(self, slug, ip_address):
-        # make sure the user is accessing the right page for their ip address
-        if self.slug_to_ip_address(slug) == ip_address:
-            try:
-                # get a monitor based on slug if it exists
-                monitor = Monitor.objects.get(slug=slug)
-            except Monitor.DoesNotExist:
-                # create a new monitor if none exists
-                monitor = Monitor.objects.create(ip_address=ip_address)
-
-            # update last_viewed for this monitor and save the changes
-            monitor.last_viewed = timezone.now()
-            monitor.save()
-
-            return monitor
-
-        raise Http404
-
     def get(self, request, *args, **kwargs):
         # get the user's ip address
         ip_address = self.request.META['REMOTE_ADDR']
@@ -37,7 +16,7 @@ class MonitorDetailView(View):
         slug = self.kwargs['slug']
 
         # get this monitor or create a new one
-        monitor = self.get_monitor(slug, ip_address)
+        monitor = get_monitor_or_create(slug, ip_address)
 
         # get the monitor's saved results
         saved_results = Result.objects.filter(
@@ -47,9 +26,10 @@ class MonitorDetailView(View):
         full_results = Result.objects.filter(
             monitor=monitor).order_by('-date_created')
 
-        # get the last result
-        last_result = full_results[0]
-
+        # if there are results, get the last result
+        last_result = None
+        if full_results:
+            last_result = full_results[0]
 
         return render(request, 'monitors/monitor_detail.html', {
             'ip_address': ip_address,
@@ -58,3 +38,22 @@ class MonitorDetailView(View):
             'full_results': full_results,
             'last_result': last_result,
         })
+
+class ResultDetailView(View):
+    def get(self, request, *args, **kwargs):
+        # get the user's ip address
+        ip_address = self.request.META['REMOTE_ADDR']
+
+        # get the requested result
+        result = get_object_or_404(Result, pk=self.kwargs['pk'])
+
+        # make sure the user has access to this result
+        # based on their ip matching the result's monitor's ip
+        url_monitor_ip_address = slug_to_ip_address(self.kwargs['slug'])
+        if ip_address == url_monitor_ip_address and ip_address == result.monitor.ip_address:
+            return render(request, 'monitors/result_detail.html', {
+                'ip_address': ip_address,
+                'result': result,
+            })
+
+        raise Http404

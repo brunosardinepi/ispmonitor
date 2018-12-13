@@ -12,7 +12,7 @@
     <p>Important results from last 24 hours</p>
     {% if saved_results %}
         {% for result in saved_results %}
-            <p>{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</p>
+            <p><a href="{% url 'result_detail' slug=result.monitor.slug pk=result.pk %}">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
         {% endfor %}
     {% else %}
         <p>No results</p>
@@ -21,7 +21,7 @@
     <p>All results from last 24 hours</p>
     {% if full_results %}
         {% for result in full_results %}
-            <p>{% if result.is_saved == True %}* {% endif %}{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</p>
+            <p><a href="{% url 'result_detail' slug=result.monitor.slug pk=result.pk %}">{% if result.is_saved == True %}* {% endif %}{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
         {% endfor %}
     {% else %}
         <p>No results</p>
