@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.views import View
 
-from .models import Monitor
+from .models import Monitor, Result
 
 
 class MonitorDetailView(View):
@@ -29,6 +29,10 @@ class MonitorDetailView(View):
 
         raise Http404
 
+    def get_results(self, monitor):
+        # get the monitor's results
+        return Result.objects.filter(monitor=monitor).order_by('-date_created')
+
     def get(self, request, *args, **kwargs):
         # get the user's ip address
         ip_address = self.request.META['REMOTE_ADDR']
@@ -39,7 +43,11 @@ class MonitorDetailView(View):
         # get this monitor or create a new one
         monitor = self.get_monitor(slug, ip_address)
 
+        # get the monitor's results
+        results = self.get_results(monitor)
+
         return render(request, 'monitors/monitor_detail.html', {
             'ip_address': ip_address,
             'monitor': monitor,
+            'results': results,
         })

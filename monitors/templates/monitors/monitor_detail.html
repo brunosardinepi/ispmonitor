@@ -2,4 +2,17 @@
 
 {% block body_content %}
     <p>{{ monitor }}</p>
+
+    {% if results %}
+        {% for result in results %}
+            {% if forloop.first %}
+                <p>Most recent result from {{ result.date_created }} UTC:</p>
+                <p>{{ result.content|linebreaks }}</p>
+            {% else %}
+                {{ result }}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No results</p>
+    {% endif %}
 {% endblock %}
