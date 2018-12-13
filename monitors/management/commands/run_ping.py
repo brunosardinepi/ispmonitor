@@ -1,3 +1,4 @@
+from decimal import Decimal
 import subprocess
 
 from django.core.management.base import BaseCommand, CommandError
@@ -34,12 +35,47 @@ class Command(BaseCommand):
             # add to the content variable
             content += "\n{}".format(output)
 
-        # create a result for this monitor
-        Result.objects.create(
-            monitor=monitor,
-            content=content,
-        )
+        # strip whitespace off the ends of the content
+        content = content.strip()
 
+        # create a result for this monitor
+        return Result.objects.create(
+                   monitor=monitor,
+                   content=content,
+               )
+
+    def update_monitor(self, result):
+        # split the ping/traceroute content into lines
+        lines = result.content.splitlines()
+
+        # find the line that has "packet loss"
+        packet_loss = [x for x in lines if "packet loss" in x][0]
+
+        # isolate the packet loss number
+        packet_loss = packet_loss.split(",")[2]
+        packet_loss = packet_loss.split("%")[0]
+        packet_loss = packet_loss.strip()
+        packet_loss = int(packet_loss)
+
+        # find the line that has "min/avg/max/mdev"
+        latency = [x for x in lines if "min/avg/max/mdev" in x][0]
+
+        # isolate the "avg" latency
+        latency = latency.split("/")[4]
+        latency = latency.strip()
+        latency = Decimal(latency)
+
+        # update the monitor's packet loss and latency
+        result.monitor.last_packet_loss = packet_loss
+        result.monitor.last_latency = latency
+
+        # save the changes
+        result.monitor.save()
+
+        # if latency is >= 300 ms or packet loss is > 0%, save the result
+        if latency > 0 or packet_loss >= 300:
+            result.is_saved = True
+            result.save()
 
     def handle(self, *args, **options):
         # get all of the monitors
@@ -47,4 +83,5 @@ class Command(BaseCommand):
 
         if monitors:
             for monitor in monitors:
-                self.create_result(monitor)
+                result = self.create_result(monitor)
+                self.update_monitor(result)

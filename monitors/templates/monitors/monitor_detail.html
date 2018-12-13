@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
 
 {% block body_content %}
-    <p>{{ monitor }}</p>
+    <p>Your IP: {{ monitor.ip_address }}</p>
+    <p>Testing from: New York</p>
+    <p>Latest latency: {{ monitor.last_latency }} ms</p>
+    <p>Latest packet loss: {{ monitor.last_packet_loss }}%</p>
 
     {% if results %}
         {% for result in results %}

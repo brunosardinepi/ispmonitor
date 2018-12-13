@@ -11,5 +11,5 @@ class Command(BaseCommand):
         # define time range as 24 hours
         time_range = timezone.now() - timezone.timedelta(hours=24)
 
-        # delete results older than 24 hours
-        Result.objects.filter(date_created__lt=time_range).delete()
+        # delete results older than 24 hours that are not saved
+        Result.objects.filter(is_saved=False, date_created__lt=time_range).delete()
