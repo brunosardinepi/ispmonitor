@@ -6,10 +6,10 @@
     {% if results %}
         {% for result in results %}
             {% if forloop.first %}
-                <p>Most recent result from {{ result.date_created }} UTC:</p>
+                <p>Most recent result from {{ result.date_created|date:"l, F j, Y @ g:i A e" }}:</p>
                 <p>{{ result.content|linebreaks }}</p>
             {% else %}
-                {{ result }}
+                <p>{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</p>
             {% endif %}
         {% endfor %}
     {% else %}

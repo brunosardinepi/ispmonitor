@@ -21,3 +21,7 @@ class Result(models.Model):
     monitor = models.ForeignKey(Monitor, on_delete=models.CASCADE)
     content = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
+    is_saved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.date_created)
