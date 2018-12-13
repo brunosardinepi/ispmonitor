@@ -29,10 +29,6 @@ class MonitorDetailView(View):
 
         raise Http404
 
-    def get_results(self, monitor):
-        # get the monitor's results
-        return Result.objects.filter(monitor=monitor).order_by('-date_created')
-
     def get(self, request, *args, **kwargs):
         # get the user's ip address
         ip_address = self.request.META['REMOTE_ADDR']
@@ -43,11 +39,22 @@ class MonitorDetailView(View):
         # get this monitor or create a new one
         monitor = self.get_monitor(slug, ip_address)
 
-        # get the monitor's results
-        results = self.get_results(monitor)
+        # get the monitor's saved results
+        saved_results = Result.objects.filter(
+            monitor=monitor, is_saved=True).order_by('-date_created')
+
+        # get the monitor's saved results
+        full_results = Result.objects.filter(
+            monitor=monitor).order_by('-date_created')
+
+        # get the last result
+        last_result = full_results[0]
+
 
         return render(request, 'monitors/monitor_detail.html', {
             'ip_address': ip_address,
             'monitor': monitor,
-            'results': results,
+            'saved_results': saved_results,
+            'full_results': full_results,
+            'last_result': last_result,
         })

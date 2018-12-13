@@ -73,7 +73,9 @@ class Command(BaseCommand):
         result.monitor.save()
 
         # if latency is >= 300 ms or packet loss is > 0%, save the result
-        if latency > 0 or packet_loss >= 300:
+        if latency >= 300 or packet_loss > 0:
+            print("latency = {}".format(latency))
+            print("packet_loss = {}".format(packet_loss))
             result.is_saved = True
             result.save()
 

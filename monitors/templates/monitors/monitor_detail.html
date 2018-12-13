@@ -6,14 +6,22 @@
     <p>Latest latency: {{ monitor.last_latency }} ms</p>
     <p>Latest packet loss: {{ monitor.last_packet_loss }}%</p>
 
-    {% if results %}
-        {% for result in results %}
-            {% if forloop.first %}
-                <p>Most recent result from {{ result.date_created|date:"l, F j, Y @ g:i A e" }}:</p>
-                <p>{{ result.content|linebreaks }}</p>
-            {% else %}
-                <p>{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</p>
-            {% endif %}
+    <p>Most recent result from {{ last_result.date_created|date:"l, F j, Y @ g:i A e" }}:</p>
+    <p>{{ last_result.content|linebreaks }}</p>
+
+    <p>Important results from last 24 hours</p>
+    {% if saved_results %}
+        {% for result in saved_results %}
+            <p>{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No results</p>
+    {% endif %}
+
+    <p>All results from last 24 hours</p>
+    {% if full_results %}
+        {% for result in full_results %}
+            <p>{% if result.is_saved == True %}* {% endif %}{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</p>
         {% endfor %}
     {% else %}
         <p>No results</p>
