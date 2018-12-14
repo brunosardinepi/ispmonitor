@@ -6,8 +6,6 @@ class Monitor(models.Model):
     slug = models.SlugField(max_length=15)
     date_created = models.DateTimeField(auto_now_add=True)
     last_viewed = models.DateTimeField(blank=True, null=True)
-    last_latency = models.DecimalField(max_digits=10, decimal_places=3, default=0.000)
-    last_packet_loss = models.IntegerField(default=0)
 
     def __str__(self):
         return self.ip_address
@@ -24,6 +22,8 @@ class Result(models.Model):
     content = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     is_saved = models.BooleanField(default=False)
+    latency = models.DecimalField(max_digits=10, decimal_places=3, default=0.000)
+    packet_loss = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.date_created)

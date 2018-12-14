@@ -38,15 +38,8 @@ class Command(BaseCommand):
         # strip whitespace off the ends of the content
         content = content.strip()
 
-        # create a result for this monitor
-        return Result.objects.create(
-                   monitor=monitor,
-                   content=content,
-               )
-
-    def update_monitor(self, result):
         # split the ping/traceroute content into lines
-        lines = result.content.splitlines()
+        lines = content.splitlines()
 
         # find the line that has "packet loss"
         packet_loss = [x for x in lines if "packet loss" in x][0]
@@ -65,17 +58,17 @@ class Command(BaseCommand):
         latency = latency.strip()
         latency = Decimal(latency)
 
-        # update the monitor's packet loss and latency
-        result.monitor.last_packet_loss = packet_loss
-        result.monitor.last_latency = latency
 
-        # save the changes
-        result.monitor.save()
+        # create a result for this monitor
+        return Result.objects.create(
+                   monitor=monitor,
+                   content=content,
+                   packet_loss=packet_loss,
+                   latency=latency,
+               )
 
         # if latency is >= 300 ms or packet loss is > 0%, save the result
         if latency >= 300 or packet_loss > 0:
-            print("latency = {}".format(latency))
-            print("packet_loss = {}".format(packet_loss))
             result.is_saved = True
             result.save()
 
@@ -86,4 +79,3 @@ class Command(BaseCommand):
         if monitors:
             for monitor in monitors:
                 result = self.create_result(monitor)
-                self.update_monitor(result)

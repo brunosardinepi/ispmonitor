@@ -3,10 +3,10 @@
 {% block body_content %}
     <p>Your IP: {{ monitor.ip_address }}</p>
     <p>Testing from: New York</p>
-    <p>Latest latency: {{ monitor.last_latency }} ms</p>
-    <p>Latest packet loss: {{ monitor.last_packet_loss }}%</p>
 
     <p>Most recent result from {{ last_result.date_created|date:"l, F j, Y @ g:i A e" }}:</p>
+    <p>Latency: {{ last_result.latency }} ms</p>
+    <p>Packet loss: {{ last_result.packet_loss }}%</p>
     <p>{{ last_result.content|linebreaks }}</p>
 
     <p>Important results from last 7 days</p>

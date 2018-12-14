@@ -1,4 +1,5 @@
 from django.test import Client, TestCase
+from django.utils import timezone
 
 from model_mommy import mommy
 
@@ -26,12 +27,18 @@ class MonitorsTest(TestCase):
         self.results = mommy.make(
             Result,
             monitor=self.monitors[0],
-            _quantity=2,
+            date_created=timezone.now(),
+            _quantity=3,
+            _fill_optional=True,
         )
 
         # set the 2nd result's monitor to the 2nd monitor
         self.results[1].monitor = self.monitors[1]
         self.results[1].save()
+
+        # set the 3rd result's date to 1 day prior to 1st result's date
+        self.results[2].date_created = timezone.now() - timezone.timedelta(days=1)
+        self.results[2].save()
 
     def test_monitor_exists(self):
         """ all of the monitors are being created correctly """
@@ -82,6 +89,8 @@ class MonitorsTest(TestCase):
         response = client.get('/{}/'.format(self.monitors[0].slug))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.monitors[0].ip_address)
+        self.assertContains(response, self.results[0].content)
+        self.assertNotContains(response, self.results[2].content)
 
         # viewing a monitor_detail page different than our ip address
         # should result in 404
