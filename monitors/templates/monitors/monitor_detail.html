@@ -9,7 +9,7 @@
     <p>Most recent result from {{ last_result.date_created|date:"l, F j, Y @ g:i A e" }}:</p>
     <p>{{ last_result.content|linebreaks }}</p>
 
-    <p>Important results from last 24 hours</p>
+    <p>Important results from last 7 days</p>
     {% if saved_results %}
         {% for result in saved_results %}
             <p><a href="{% url 'result_detail' slug=result.monitor.slug pk=result.pk %}">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
