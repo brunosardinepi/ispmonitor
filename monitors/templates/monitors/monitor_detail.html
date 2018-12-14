@@ -4,10 +4,14 @@
     <p>Your IP: {{ monitor.ip_address }}</p>
     <p>Testing from: New York</p>
 
-    <p>Most recent result from {{ last_result.date_created|date:"l, F j, Y @ g:i A e" }}:</p>
-    <p>Latency: {{ last_result.latency }} ms</p>
-    <p>Packet loss: {{ last_result.packet_loss }}%</p>
-    <p>{{ last_result.content|linebreaks }}</p>
+    {% if last_result %}
+        <p>Most recent result from {{ last_result.date_created|date:"l, F j, Y @ g:i A e" }}:</p>
+        <p>Latency: {{ last_result.latency }} ms</p>
+        <p>Packet loss: {{ last_result.packet_loss }}%</p>
+        <p>{{ last_result.content|linebreaks }}</p>
+    {% else %}
+        <p>No results yet. Check back in 5 minutes.</p>
+    {% endif %}
 
     <p>Important results from last 7 days</p>
     {% if saved_results %}
