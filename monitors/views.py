@@ -26,6 +26,9 @@ class MonitorDetailView(View):
         full_results = Result.objects.filter(
             monitor=monitor).order_by('-date_created')
 
+        # get the monitor's most recent 5 results
+        recent_results = full_results[:5]
+
         # if there are results, get the last result
         last_result = None
         if full_results:
@@ -36,6 +39,7 @@ class MonitorDetailView(View):
             'monitor': monitor,
             'saved_results': saved_results,
             'full_results': full_results,
+            'recent_results': recent_results,
             'last_result': last_result,
         })
 

@@ -1,33 +1,52 @@
 {% extends "layout.html" %}
 
 {% block body_content %}
-    <p>Your IP: {{ monitor.ip_address }}</p>
-    <p>Testing from: New York</p>
-
-    {% if last_result %}
-        <p>Most recent result from {{ last_result.date_created|date:"l, F j, Y @ g:i A e" }}:</p>
-        <p>Latency: {{ last_result.latency }} ms</p>
-        <p>Packet loss: {{ last_result.packet_loss }}%</p>
-        <p>{{ last_result.content|linebreaks }}</p>
-    {% else %}
-        <p>No results yet. Check back in 5 minutes.</p>
-    {% endif %}
-
-    <p>Important results from last 7 days</p>
-    {% if saved_results %}
-        {% for result in saved_results %}
-            <p><a href="{% url 'result_detail' slug=result.monitor.slug pk=result.pk %}">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
-        {% endfor %}
-    {% else %}
-        <p>No results</p>
-    {% endif %}
-
-    <p>All results from last 24 hours</p>
-    {% if full_results %}
-        {% for result in full_results %}
-            <p><a href="{% url 'result_detail' slug=result.monitor.slug pk=result.pk %}">{% if result.is_saved == True %}* {% endif %}{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
-        {% endfor %}
-    {% else %}
-        <p>No results</p>
-    {% endif %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <p>Your IP: {{ monitor.ip_address }}</p>
+                <p>Testing from: New York</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <p>Most recent results</p>
+                {% if recent_results %}
+                    {% for result in recent_results %}
+                        <p><a href="{% url 'result_detail' slug=result.monitor.slug pk=result.pk %}">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                    {% endfor %}
+                {% else %}
+                    <p>No results</p>
+                {% endif %}
+            
+                <p>Important results from last 7 days</p>
+                {% if saved_results %}
+                    {% for result in saved_results %}
+                        <p><a href="{% url 'result_detail' slug=result.monitor.slug pk=result.pk %}">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                    {% endfor %}
+                {% else %}
+                    <p>No results</p>
+                {% endif %}
+            
+                <p>All results from last 24 hours</p>
+                {% if full_results %}
+                    {% for result in full_results %}
+                        <p><a href="{% url 'result_detail' slug=result.monitor.slug pk=result.pk %}">{% if result.is_saved == True %}* {% endif %}{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                    {% endfor %}
+                {% else %}
+                    <p>No results</p>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                {% if last_result %}
+                    <p>Most recent result from {{ last_result.date_created|date:"l, F j, Y @ g:i A e" }}:</p>
+                    <p>Latency: {{ last_result.latency }} ms</p>
+                    <p>Packet loss: {{ last_result.packet_loss }}%</p>
+                    <p>{{ last_result.content|linebreaks }}</p>
+                {% else %}
+                    <p>No results yet. Check back in 5 minutes.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
