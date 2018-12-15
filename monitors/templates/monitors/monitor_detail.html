@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+{% load static %}
+
 {% block body_content %}
     <div class="container-fluid">
         <div class="row">
@@ -13,7 +15,7 @@
                 <p>Most recent results</p>
                 {% if recent_results %}
                     {% for result in recent_results %}
-                        <p><a href="{% url 'result_detail' slug=result.monitor.slug pk=result.pk %}">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                        <p><a id="{{ result.pk }}" class="result" href="{% url 'result_detail' pk=result.pk %}">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
                     {% endfor %}
                 {% else %}
                     <p>No results</p>
@@ -22,7 +24,7 @@
                 <p>Important results from last 7 days</p>
                 {% if saved_results %}
                     {% for result in saved_results %}
-                        <p><a href="{% url 'result_detail' slug=result.monitor.slug pk=result.pk %}">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                        <p><a id="{{ result.pk }}" class="result" href="{% url 'result_detail' pk=result.pk %}">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
                     {% endfor %}
                 {% else %}
                     <p>No results</p>
@@ -31,7 +33,7 @@
                 <p>All results from last 24 hours</p>
                 {% if full_results %}
                     {% for result in full_results %}
-                        <p><a href="{% url 'result_detail' slug=result.monitor.slug pk=result.pk %}">{% if result.is_saved == True %}* {% endif %}{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                        <p><a id="{{ result.pk }}" class="result" href="{% url 'result_detail' pk=result.pk %}">{% if result.is_saved == True %}* {% endif %}{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
                     {% endfor %}
                 {% else %}
                     <p>No results</p>
@@ -39,14 +41,18 @@
             </div>
             <div class="col-md-8">
                 {% if last_result %}
-                    <p>Most recent result from {{ last_result.date_created|date:"l, F j, Y @ g:i A e" }}:</p>
-                    <p>Latency: {{ last_result.latency }} ms</p>
-                    <p>Packet loss: {{ last_result.packet_loss }}%</p>
-                    <p>{{ last_result.content|linebreaks }}</p>
+                    <p>Most recent result from <span id="last_result_date_created">{{ last_result.date_created|date:"l, F j, Y @ g:i A e" }}</span>:</p>
+                    <p>Latency: <span id="last_result_latency">{{ last_result.latency }}</span> ms</p>
+                    <p>Packet loss: <span id="last_result_packet_loss">{{ last_result.packet_loss }}</span>%</p>
+                    <div id="last_result_content">{{ last_result.content|linebreaks }}</div>
                 {% else %}
                     <p>No results yet. Check back in 5 minutes.</p>
                 {% endif %}
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/get_result.js' %}"></script>
 {% endblock %}

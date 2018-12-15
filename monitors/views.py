@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views import View
@@ -53,11 +53,18 @@ class ResultDetailView(View):
 
         # make sure the user has access to this result
         # based on their ip matching the result's monitor's ip
-        url_monitor_ip_address = slug_to_ip_address(self.kwargs['slug'])
-        if ip_address == url_monitor_ip_address and ip_address == result.monitor.ip_address:
-            return render(request, 'monitors/result_detail.html', {
-                'ip_address': ip_address,
-                'result': result,
-            })
+        if ip_address == result.monitor.ip_address:
+
+            # format the date to string. example: Saturday, December 15, 2018 @ 7:30 AM UTC
+            date_created = result.date_created.strftime("%A, %B %-d, %Y @ %-I:%M %p %Z")
+
+            # send data back to the template
+            data = {
+                'date_created': date_created,
+                'content': result.content,
+                'latency': result.latency,
+                'packet_loss': result.packet_loss,
+            }
+            return JsonResponse(data)
 
         raise Http404
