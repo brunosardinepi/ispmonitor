@@ -3,45 +3,52 @@
 {% load static %}
 
 {% block body_content %}
-    <div class="container-fluid">
+    <div class="container-fluid mt-3 pb-3">
         <div class="row">
             <div class="col-12">
-                <p>Your IP: {{ monitor.ip_address }}</p>
-                <p>Testing from: New York</p>
+                <h4>Your IP: {{ monitor.ip_address }}</h4>
+                <small>Testing from: New York</small>
+                <hr>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
-                <p>Most recent results</p>
-                {% if recent_results %}
-                    {% for result in recent_results %}
-                        <p><a id="{{ result.pk }}" class="result" href="">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
-                    {% endfor %}
-                {% else %}
-                    <p>No results</p>
-                {% endif %}
+            <div class="col-lg-4 order-2 order-lg-1">
+                <div class="mb-5">
+                    <h6 class="sidebar-heading">Most recent results</h6>
+                    {% if recent_results %}
+                        {% for result in recent_results %}
+                            <p><a id="{{ result.pk }}" class="result" href="">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                        {% endfor %}
+                    {% else %}
+                        <p>No results</p>
+                    {% endif %}
+                </div>
             
-                <p>Important results from last 7 days</p>
-                {% if saved_results %}
-                    {% for result in saved_results %}
-                        <p><a id="{{ result.pk }}" class="result" href="">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
-                    {% endfor %}
-                {% else %}
-                    <p>No results</p>
-                {% endif %}
-            
-                <p>All results from last 24 hours</p>
-                {% if full_results %}
-                    {% for result in full_results %}
-                        <p><a id="{{ result.pk }}" class="result" href="">{% if result.is_saved == True %}* {% endif %}{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
-                    {% endfor %}
-                {% else %}
-                    <p>No results</p>
-                {% endif %}
+                <div class="mb-5">
+                    <h6 class="sidebar-heading">Anomalies from last 7 days</h6>
+                    {% if saved_results %}
+                        {% for result in saved_results %}
+                            <p><a id="{{ result.pk }}" class="result" href="">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                        {% endfor %}
+                    {% else %}
+                        <p>No results</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <h6 class="sidebar-heading">All results from last 24 hours</h6>
+                    {% if full_results %}
+                        {% for result in full_results %}
+                            <p><a id="{{ result.pk }}" class="result" href="">{% if result.is_saved == True %}* {% endif %}{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                        {% endfor %}
+                    {% else %}
+                        <p>No results</p>
+                    {% endif %}
+                </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-lg-8 order-1 order-lg-2">
                 {% if last_result %}
-                    <div id="last_result">
+                    <div id="last-result">
                         {% include "monitors/last_result.html" with result=last_result %}
                     </div>
                 {% else %}

@@ -23,32 +23,28 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-expand-md fixed-top">
+        <nav class="navbar navbar-expand-md fixed-top bg-white">
             <a class="navbar-brand" href="{% url 'home' %}">ISP Monitor</a>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarsExample04"
-                    aria-controls="navbarsExample04"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarsExample04">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'monitor_detail' slug=ip_address|ip_address_to_slug %}">My ISP</a>
-                    </li>
-                </ul>
-            </div>
+            <a class="nav-link ml-auto" href="{% url 'monitor_detail' slug=ip_address|ip_address_to_slug %}">Your ISP</a>
         </nav>
 
         {% block body_content %}{% endblock %}
 
         <footer class="footer">
             <div class="container-fluid">
-                footer
+                <div class="row">
+                    <div class="col-md-3">
+                        &copy; {% now "Y" %} ISP Monitor
+                    </div>
+                    <div id="footer-links" class="col-md-9">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item"><a href="">Help</a></li>
+                            <li class="list-inline-item"><a href="">Contact</a></li>
+                            <li class="list-inline-item"><a href="">Donate</a></li>
+                            <li class="list-inline-item"><a href="">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </footer>
 

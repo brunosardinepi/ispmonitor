@@ -1,4 +1,4 @@
-<p>Most recent result from <span id="last_result_date_created">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</span>:</p>
-<p>Latency: <span id="last_result_latency">{{ result.latency }}</span> ms</p>
-<p>Packet loss: <span id="last_result_packet_loss">{{ result.packet_loss }}</span>%</p>
-<div id="last_result_content">{{ result.content|linebreaks }}</div>
+<p>Most recent result from {{ result.date_created|date:"l, F j, Y @ g:i A e" }}:</p>
+<p><span class="font-weight-bold">Latency:</span> {{ result.latency }} ms</p>
+<p><span class="font-weight-bold">Packet loss:</span> {{ result.packet_loss }}%</p>
+<div id="last-result-p">{{ result.content|linebreaks }}</div>

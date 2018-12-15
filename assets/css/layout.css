@@ -1,3 +1,9 @@
 html {position:relative;min-height:100%;}
-body{margin-bottom:60px;padding-top:56px;}
-.footer{position:absolute;bottom:0;width:100%;height:60px;line-height:60px;}
+body{font-size:0.875rem;margin-bottom:60px;padding-top:56px;}
+.footer{position:absolute;bottom:0;width:100%;height:60px;line-height:30px;text-align:center;}
+#last-result-p{font-family:"Courier New";}
+.sidebar-heading{font-size:0.825rem;text-transform:uppercase;}
+.navbar{box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);}
+
+@media (min-width: 768px) {body{margin-bottom:60px;}.footer{height:60px;line-height:60px;text-align:left;}#footer-links{text-align:right;}}
+@media (min-width: 992px) {body{font-size:1rem;}}

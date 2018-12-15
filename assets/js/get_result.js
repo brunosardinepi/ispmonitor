@@ -11,7 +11,7 @@ $(document).on("click", ".result", function (event) {
         data: {},
         success: function (data) {
             // replace the result details
-            $("#last_result").html(data);
+            $("#last-result").html(data);
         }
     });
 });
