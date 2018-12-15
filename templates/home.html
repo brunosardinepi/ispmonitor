@@ -3,11 +3,13 @@
 {% load monitor_extras %}
 
 {% block body_content %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <p>Home</p>
-            </div>
+    <section class="jumbotron text-center bg-white">
+        <div class="container">
+            <h1 class="jumbotron-heading">Monitor your home internet connection</h1>
+            <p class="lead text-muted">Hold your internet provider accountable by keeping track of latency and outages. Detailed logs and uptime monitoring for your home internet, all for free.</p>
+            <p>
+                <a href="{% url 'monitor_detail' slug=ip_address|ip_address_to_slug %}" class="btn btn-primary my-2 px-5 py-2">Get started</a>
+            </p>
         </div>
-    </div>
+    </section>
 {% endblock %}
