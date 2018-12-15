@@ -102,18 +102,6 @@ class MonitorsTest(TestCase):
 
         # view the result_detail page
         client = Client(REMOTE_ADDR=self.monitors[0].ip_address)
-        response = client.get('/{}/{}/'.format(self.monitors[0].slug, self.results[0].pk))
+        response = client.get('/result/{}/'.format(self.results[0].pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.results[0].content)
-
-        # my ip matches the result's monitor's ip
-        # but i'm going to the wrong monitor
-        # expect 404
-        response = client.get('/{}/{}/'.format(self.monitors[1].slug, self.results[0].pk))
-        self.assertEqual(response.status_code, 404)
-
-        # my ip matches the monitor's ip
-        # but i'm going to the wrong result
-        # should result in 404
-        response = client.get('/{}/{}/'.format(self.monitors[0].slug, self.results[1].pk))
-        self.assertEqual(response.status_code, 404)

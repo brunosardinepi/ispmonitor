@@ -15,7 +15,7 @@
                 <p>Most recent results</p>
                 {% if recent_results %}
                     {% for result in recent_results %}
-                        <p><a id="{{ result.pk }}" class="result" href="{% url 'result_detail' pk=result.pk %}">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                        <p><a id="{{ result.pk }}" class="result" href="">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
                     {% endfor %}
                 {% else %}
                     <p>No results</p>
@@ -24,7 +24,7 @@
                 <p>Important results from last 7 days</p>
                 {% if saved_results %}
                     {% for result in saved_results %}
-                        <p><a id="{{ result.pk }}" class="result" href="{% url 'result_detail' pk=result.pk %}">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                        <p><a id="{{ result.pk }}" class="result" href="">{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
                     {% endfor %}
                 {% else %}
                     <p>No results</p>
@@ -33,7 +33,7 @@
                 <p>All results from last 24 hours</p>
                 {% if full_results %}
                     {% for result in full_results %}
-                        <p><a id="{{ result.pk }}" class="result" href="{% url 'result_detail' pk=result.pk %}">{% if result.is_saved == True %}* {% endif %}{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
+                        <p><a id="{{ result.pk }}" class="result" href="">{% if result.is_saved == True %}* {% endif %}{{ result.date_created|date:"l, F j, Y @ g:i A e" }}</a></p>
                     {% endfor %}
                 {% else %}
                     <p>No results</p>
