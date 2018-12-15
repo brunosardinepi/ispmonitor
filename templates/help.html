@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% load monitor_extras %}
+
+{% block title %}Help | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="container-fluid mt-3 pb-3">
+        <div class="row">
+            <div class="col-12">
+                <h3>What is this site?</h3>
+                <p>ISP Monitor finds your home IP address and monitors your internet provider's uptime. We check uptime every 5 minutes and store results from the past 24 hours. When we see an anomaly such as high latency or packet loss, we store the result for 7 days.</p>
+
+                <h3>Where do I sign up?</h3>
+                <p>There is no sign up process. We use your home IP address to provide you with the proper information. Your public IP address is available to anyone on the internet.</p>
+
+                <h3>How do I start?</h3>
+                <p>Go to <a href="{% url 'monitor_detail' slug=ip_address|ip_address_to_slug %}">your ISP page</a>. If this is your first time accessing this page, it will take 5 minutes for the site to gather your first results.</p>
+
+                <h3>Where are my results?</h3>
+                <p>Results are added every 5 minutes. You will need to allow ping/ICMP to your home firewall so that our servers can ping you.</p>
+
+                <h3>What are anomalies?</h3>
+                <p>Anomalies are results outside what we would expect to see when running our tests. We mark results as anomalous if latency is above 300 ms or packet loss is above 0%.</p>
+
+                <h3>How much does it cost?</h3>
+                <p>The site is free for everyone. If you want, you can <a href="{% url 'donate' %}">donate</a> to help keep the servers up.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

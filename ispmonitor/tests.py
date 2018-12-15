@@ -5,6 +5,14 @@ class HomeTest(TestCase):
     def setUp(self):
         self.client = Client()
 
-    def test_home(self):
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
+    def test_pages(self):
+        pages = [
+            '/',
+            '/donate/',
+            '/help/',
+            '/privacy-policy/',
+        ]
+
+        for page in pages:
+            response = self.client.get(page)
+            self.assertEqual(response.status_code, 200)
