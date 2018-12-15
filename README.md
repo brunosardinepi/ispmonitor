@@ -5,9 +5,12 @@ This project's goal is to monitor home internet providers for latency and packet
 
 ## Installation requirements
 
+```
 pip install -r requirements.txt
 
 */5 * * * * /home/user/ispmonitor/ispmonitorenv/bin/python3 /home/user/ispmonitor/manage.py get_result
-*/5 * * * * /home/user/ispmonitor/ispmonitorenv/bin/python3 /home/user/ispmonitor/manage.py delete_results_gte_24_hours
-0 1 * * * /home/user/ispmonitor/ispmonitorenv/bin/python3 /home/user/ispmonitor/manage.py purge_seven_days
 
+*/5 * * * * /home/user/ispmonitor/ispmonitorenv/bin/python3 /home/user/ispmonitor/manage.py delete_results_gte_24_hours
+
+0 1 * * * /home/user/ispmonitor/ispmonitorenv/bin/python3 /home/user/ispmonitor/manage.py purge_seven_days
+```
