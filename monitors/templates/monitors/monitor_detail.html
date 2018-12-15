@@ -41,10 +41,9 @@
             </div>
             <div class="col-md-8">
                 {% if last_result %}
-                    <p>Most recent result from <span id="last_result_date_created">{{ last_result.date_created|date:"l, F j, Y @ g:i A e" }}</span>:</p>
-                    <p>Latency: <span id="last_result_latency">{{ last_result.latency }}</span> ms</p>
-                    <p>Packet loss: <span id="last_result_packet_loss">{{ last_result.packet_loss }}</span>%</p>
-                    <div id="last_result_content">{{ last_result.content|linebreaks }}</div>
+                    <div id="last_result">
+                        {% include "monitors/last_result.html" with result=last_result %}
+                    </div>
                 {% else %}
                     <p>No results yet. Check back in 5 minutes.</p>
                 {% endif %}

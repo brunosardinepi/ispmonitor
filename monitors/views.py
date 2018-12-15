@@ -1,4 +1,4 @@
-from django.http import Http404, JsonResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views import View
@@ -65,6 +65,9 @@ class ResultDetailView(View):
                 'latency': result.latency,
                 'packet_loss': result.packet_loss,
             }
-            return JsonResponse(data)
+
+            # render the html and pass it back to ajax
+            html = render(request, "monitors/last_result.html", {'result': result})
+            return HttpResponse(html)
 
         raise Http404
