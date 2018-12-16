@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% load monitor_extras %}
+
+{% block title %}Help | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="container-fluid mt-3 pb-3">
+        <div class="row">
+            <div class="col-12">
+                <h3>No IP found</h3>
+                <p>We were unable to determine your IP address. If you feel this is an error, please <a href="">contact us</a>.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

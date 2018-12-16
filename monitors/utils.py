@@ -12,6 +12,10 @@ def get_user_ip(request):
     if not ip:
         ip = request.META['REMOTE_ADDR']
 
+    # if nothing got us an ip, set to None
+    if ip == "":
+        ip = None
+
     return ip
 
 def slug_to_ip_address(slug):

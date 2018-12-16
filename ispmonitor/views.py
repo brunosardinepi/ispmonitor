@@ -36,5 +36,8 @@ class PrivacyView(TemplateView):
         context['ip_address'] = get_user_ip(self.request)
         return context
 
+class NoIPView(TemplateView):
+    template_name = 'no_ip.html'
+
 def handler404(request):
     raise Http404

@@ -63,7 +63,11 @@
         <nav class="navbar navbar-expand-md fixed-top bg-white">
             <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
                 <img src="{% static 'img/ispmonitor-logo-nav.svg' %}" class="mr-2" />ISP Monitor</a>
-            <a class="nav-link ml-auto" href="{% url 'monitor_detail' slug=ip_address|ip_address_to_slug %}">Your ISP</a>
+            {% if ip_address %}
+                <a class="nav-link ml-auto" href="{% url 'monitor_detail' slug=ip_address|ip_address_to_slug %}">Your ISP</a>
+            {% else %}
+                <a class="nav-link ml-auto" href="{% url 'no-ip' %}">Your ISP</a>
+            {% endif %}
         </nav>
 
         <main role="main">{% block body_content %}{% endblock %}</main>

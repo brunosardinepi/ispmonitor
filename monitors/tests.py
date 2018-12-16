@@ -97,6 +97,14 @@ class MonitorsTest(TestCase):
         response = client.get('/{}/'.format(self.monitors[1].slug))
         self.assertEqual(response.status_code, 404)
 
+    def test_monitor_page_no_ip(self):
+        """no client ip is found"""
+
+        # view the monitor_detail page
+        client = Client(REMOTE_ADDR="")
+        response = client.get('/1-1-1-1/')
+        self.assertRedirects(response, '/no-ip/', 302, 200)
+
     def test_result_page(self):
         """the result_detail page shows the correct result content"""
 

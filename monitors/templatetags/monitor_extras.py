@@ -7,7 +7,8 @@ register = template.Library()
 
 @register.filter
 def ip_address_to_slug(ip_address):
-    return ip_address.replace(".", "-")
+    if ip_address:
+        return ip_address.replace(".", "-")
 
 @register.simple_tag
 def use_ga():
