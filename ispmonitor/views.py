@@ -10,7 +10,6 @@ class HomeView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context['ip_address'] = get_user_ip(self.request)
-        print(get_user_ip(self.request))
         return context
 
 class HelpView(TemplateView):
