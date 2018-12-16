@@ -4,13 +4,13 @@ from django.utils import timezone
 from django.views import View
 
 from .models import Monitor, Result
-from .utils import get_monitor_or_create, slug_to_ip_address
+from .utils import get_monitor_or_create, get_user_ip, slug_to_ip_address
 
 
 class MonitorDetailView(View):
     def get(self, request, *args, **kwargs):
         # get the user's ip address
-        ip_address = self.request.META['REMOTE_ADDR']
+        ip_address = get_user_ip(request)
 
         # store the url slug
         slug = self.kwargs['slug']
@@ -46,7 +46,7 @@ class MonitorDetailView(View):
 class ResultDetailView(View):
     def get(self, request, *args, **kwargs):
         # get the user's ip address
-        ip_address = self.request.META['REMOTE_ADDR']
+        ip_address = get_user_ip(request)
 
         # get the requested result
         result = get_object_or_404(Result, pk=self.kwargs['pk'])

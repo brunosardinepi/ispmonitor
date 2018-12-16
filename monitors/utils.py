@@ -4,6 +4,16 @@ from django.utils import timezone
 from .models import Monitor, Result
 
 
+def get_user_ip(request):
+    # get the ip in production
+    ip = request.META.get('HTTP_X_FORWARDED_FOR')
+
+    # or get the ip in dev
+    if not ip:
+        ip = request.META['REMOTE_ADDR']
+
+    return ip
+
 def slug_to_ip_address(slug):
     # replace the slug's hyphens with periods
     return slug.replace("-", ".")
