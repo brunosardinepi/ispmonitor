@@ -1,4 +1,6 @@
 from django.http import Http404
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.views.generic import TemplateView
 
 from monitors.utils import get_user_ip
@@ -40,4 +42,7 @@ class NoIPView(TemplateView):
     template_name = 'no_ip.html'
 
 def handler404(request):
-    raise Http404
+    response = render_to_response('404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% load monitor_extras %}
+
+{% block title %}Donate | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="container-fluid mt-3 pb-3">
+        <div class="row">
+            <div class="col-12">
+                <h3>Error</h3>
+                <p>You either don't have permission to view this page, or we messed up. Please <a href="mailto:ispmonitororg@gmail.com">contact us</a> if you need help.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
