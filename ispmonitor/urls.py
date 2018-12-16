@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.views.generic import TemplateView
 from django.urls import path
 
 from . import config
@@ -15,4 +16,7 @@ urlpatterns = [
     path('no-ip/', views.NoIPView.as_view(), name='no-ip'),
     path('<slug:slug>/', MonitorDetailView.as_view(), name='monitor_detail'),
     path('', views.HomeView.as_view(), name='home'),
+
+    path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+    path('sitemap.xml', TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml")),
 ]

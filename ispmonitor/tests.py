@@ -12,6 +12,8 @@ class HomeTest(TestCase):
             '/help/',
             '/privacy-policy/',
             '/no-ip/',
+            '/sitemap.xml',
+            '/robots.txt',
         ]
 
         for page in pages:
